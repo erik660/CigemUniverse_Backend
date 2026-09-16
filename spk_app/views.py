@@ -41,7 +41,8 @@ def _get_cached_platform_data():
 
 def _generate_ide_konten_ai(nama_aset, nama_gaya, custom_prompt, platform_terbaik):
     """Generate dynamic structured content ideas using Groq API."""
-    groq_token = os.environ.get('GROQ_API_KEY')
+    # Langsung masukkan API Key sebagai cadangan jika .env gagal terbaca di server
+    groq_token = os.environ.get('GROQ_API_KEY', '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')
 
     konteks_gaya = ""
     if "Edukasi" in nama_gaya:
@@ -81,9 +82,11 @@ def _generate_ide_konten_ai(nama_aset, nama_gaya, custom_prompt, platform_terbai
         f"    }}\n"
         f"  ]\n"
         f"}}\n"
-        f"Jangan sertakan teks penjelasan apapun di luar format JSON tersebut."
+        f"Jangan sertakan teks penjelasan apapun di luar format JSON tersebut.\n"
+        f"[Request ID untuk variasi: {os.urandom(4).hex()}]"
     )
 
+    error_msg = "Unknown Error"
     try:
         url = "https://api.groq.com/openai/v1/chat/completions"
         headers = {
@@ -109,18 +112,20 @@ def _generate_ide_konten_ai(nama_aset, nama_gaya, custom_prompt, platform_terbai
                 elif isinstance(parsed, dict):
                     return {"ideas": [parsed]}
         else:
-            print(f"Groq API Error {resp.status_code}: {resp.text}")
+            error_msg = f"Groq API Error {resp.status_code}: {resp.text}"
+            print(error_msg)
             
     except Exception as e:
-        print(f"Error calling Groq API: {e}")
+        error_msg = f"Exception: {str(e)}"
+        print(error_msg)
 
     # Fallback yang terstruktur rapi jika AI gagal atau koneksi bermasalah
     return {
         "ideas": [
             {
-                "title": f"Ide Kreatif: {nama_aset}",
-                "hook": f"Yakin sudah tahu cara terbaik memanfaatkan {nama_aset}?",
-                "caption": f"Dalam postingan kali ini, kita akan membahas rahasia di balik {nama_aset} dengan pendekatan gaya {nama_gaya} yang menarik dan mudah dipahami. Simak penjelasan lengkapnya!",
+                "title": f"ERROR: {error_msg[:100]}",
+                "hook": f"AI Gagal merespon. Jika ini ProxyError, berarti PythonAnywhere memblokir Groq.",
+                "caption": f"Detail error: {error_msg}",
                 "script": f"1. [Visual: Sorot jelas {nama_aset} di 3 detik pertama]\n2. [Audio/VO]: Jelaskan keunggulan utama dengan gaya {nama_gaya}.\n3. [Outro]: Ajak audiens berinteraksi.",
                 "hashtags": [f"#{nama_aset.replace(' ', '')}", f"#{nama_gaya.replace(' ', '')}", f"#{platform_terbaik.replace(' ', '')}", "#CigemCreative"],
                 "CTA": "Bagikan pendapatmu atau tag temanmu di kolom komentar ya!"

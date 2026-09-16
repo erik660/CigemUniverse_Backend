@@ -12,9 +12,9 @@ export default async function handler(req, res) {
     const nama_gaya = body.gaya || '';
     const custom_prompt = body.custom_prompt || `Buatkan ide konten tentang ${nama_aset} dengan gaya ${nama_gaya}`;
 
-    const { fetch } = require('undici');
-    // Memasukkan API key Groq yang Anda berikan
-    const groqToken = process.env.GROQ_API_KEY;
+    // const { fetch } = require('undici'); // Dihapus karena Vercel Node 18+ sudah support fetch bawaan
+    // Memasukkan API key Groq secara langsung (jalan pintas)
+    const groqToken = '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';
 
     const platform_terbaik = 'Instagram';
 
@@ -22,14 +22,14 @@ export default async function handler(req, res) {
 
     const modelUrl = 'https://api.groq.com/openai/v1/chat/completions';
     const payload = {
-      model: "llama-3.3-70b-versatile", // Model dari Meta di Groq (cepat, cerdas, dan aktif)
+      model: "openai/gpt-oss-20b",
       messages: [
         {
           role: "user",
           content: prompt
         }
       ],
-      response_format: { type: "json_object" }, // Memaksa format respons sebagai JSON
+      response_format: { type: "json_object" },
       temperature: 0.8,
       max_tokens: 1500
     };
@@ -75,10 +75,10 @@ export default async function handler(req, res) {
       // try to extract JSON substring
       const m = teks.match(/\{\s*\"ideas\"[\s\S]*\}/);
       if (m) {
-        try { return res.status(200).json({ ide_konten: JSON.parse(m[0]) }); } catch (e) {}
+        try { return res.status(200).json({ ide_konten: JSON.parse(m[0]) }); } catch (e) { }
       }
       // fallback
-      return res.status(200).json({ ide_konten: { ideas: [{ title: `Ide: ${nama_aset}`, hook: teks.slice(0,80), caption: teks, script: '', hashtags: [], CTA: 'Tanya di komentar' }] } });
+      return res.status(200).json({ ide_konten: { ideas: [{ title: `Ide: ${nama_aset}`, hook: teks.slice(0, 80), caption: teks, script: '', hashtags: [], CTA: 'Tanya di komentar' }] } });
     }
   } catch (err) {
     console.error(err);
