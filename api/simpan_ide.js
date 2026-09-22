@@ -31,7 +31,7 @@ module.exports = async function handler(req, res) {
 
     const platform_terbaik = 'Instagram';
 
-    const prompt = `Anda adalah Tim Kreatif Social Media Senior di Cigem Creative (perusahaan konveksi & garment custom premium).\nArahan dari tim: ${custom_prompt}\nATURAN KRUSIAL KONVEKSI: Jika melibatkan aset alat/mesin, fokuskan pada keseruan proses produksi (ASMR/satisfying BTS) dan pembuktian kualitas kerapian orderan klien (Portofolio) agar calon klien terkesan dan percaya memesan produk custom di Cigem. Jangan pernah buat tutorial service/rawat mesin!\nSesuaikan ide ini khusus untuk algoritma platform ${platform_terbaik}.\nKeluaran harus berupa valid JSON dengan struktur:{\n  "ideas": [{"title":..., "hook":..., "caption":..., "script":..., "hashtags": [...], "CTA":...}]\n} Buat maksimal 3 ide. Jangan sertakan teks penjelasan di luar JSON.`;
+    const prompt = `Anda adalah Tim Kreatif Social Media Senior di Cigem Creative (perusahaan konveksi & garment custom premium).\nArahan dari tim: ${custom_prompt}\nATURAN KRUSIAL KONVEKSI: Jika melibatkan aset alat/mesin, fokuskan pada keseruan proses produksi (ASMR/satisfying BTS) dan pembuktian kualitas kerapian orderan klien (Portofolio) agar calon klien terkesan dan percaya memesan produk custom di Cigem. Jangan pernah buat tutorial service/rawat mesin!\nSesuaikan ide ini khusus untuk algoritma platform ${platform_terbaik}.\nKeluaran harus berupa valid JSON dengan struktur:{\n  "ideas": [{"title":..., "hook":..., "caption":..., "script":..., "hashtags": [...], "CTA":...}]\n} Buat maksimal 3 ide. TULISKAN SCRIPT DAN CAPTION DENGAN SANGAT SINGKAT DAN PADAT (MAKSIMAL 150 KATA PER IDE) AGAR TIDAK TERPOTONG. Jangan sertakan teks penjelasan di luar JSON.`;
 
     const modelUrl = 'https://api.groq.com/openai/v1/chat/completions';
     const payload = {
@@ -44,7 +44,7 @@ module.exports = async function handler(req, res) {
       ],
       response_format: { type: "json_object" },
       temperature: 0.8,
-      max_tokens: 1500
+      max_tokens: 4000
     };
 
     let resp;
