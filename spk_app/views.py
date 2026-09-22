@@ -42,7 +42,7 @@ def _get_cached_platform_data():
 def _generate_ide_konten_ai(nama_aset, nama_gaya, custom_prompt, platform_terbaik):
     """Generate dynamic structured content ideas using Groq API."""
     # Langsung masukkan API Key sebagai cadangan jika .env gagal terbaca di server
-    groq_token = os.environ.get('GROQ_API_KEY', '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')
+    groq_token = os.environ.get('GROQ_API_KEY')
 
     konteks_gaya = ""
     if "Edukasi" in nama_gaya:

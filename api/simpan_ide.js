@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     // const { fetch } = require('undici'); // Dihapus karena Vercel Node 18+ sudah support fetch bawaan
     // Memasukkan API key Groq secara langsung (jalan pintas)
-    const groqToken = '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';
+    const groqToken = process.env.GROQ_API_KEY;
 
     const platform_terbaik = 'Instagram';
 
