@@ -1,7 +1,7 @@
 // Vercel Serverless function to generate content ideas using Groq API
 // Deploy this file under /api on Vercel (it will be available at /api/simpan_ide)
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
