@@ -1,4 +1,3 @@
-require('dotenv').config();
 // Vercel Serverless function to generate content ideas using Groq API
 // Deploy this file under /api on Vercel (it will be available at /api/simpan_ide)
 
